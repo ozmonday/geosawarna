@@ -18,8 +18,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
-    final double _height =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    final double _height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
 
     return SafeArea(
       child: Scaffold(
@@ -37,12 +36,12 @@ class _HomePageState extends State<HomePage> {
             Container(
               padding: EdgeInsets.only(left: 8, right: 8, top: 15, bottom: 8),
               width: _width,
-              height: (_height / 10) * 2,
+              height: _height * 0.2,
               decoration: BoxDecoration(color: Color.fromRGBO(0, 0, 0, 0.30)),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Image.asset("assets/compass.png"),
+                    //Image.asset("assets/compass.png"),
                     Container(
                         padding: EdgeInsets.all(8),
                         margin: EdgeInsets.only(left: 8),
@@ -55,7 +54,7 @@ class _HomePageState extends State<HomePage> {
             Container(
               padding: EdgeInsets.zero,
               width: _width,
-              height: (_height / 10) * 8,
+              height: _height * 0.8,
               decoration: BoxDecoration(color: Color.fromRGBO(0, 0, 0, 0.30)),
               child: GridView.count(
                 padding:

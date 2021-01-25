@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:geosawarna/pages/galeri_page.dart';
-import 'package:geosawarna/pages/kontak_page.dart';
-import 'package:geosawarna/pages/list_page.dart';
-import 'package:geosawarna/pages/map_page.dart';
 
+import './pages/detail_info_page.dart';
+import './pages/galeri_page.dart';
+import './pages/kontak_page.dart';
+import './pages/list_page.dart';
+import './pages/map_page.dart';
 import './pages/credit_page.dart';
 import './pages/about_page.dart';
 import './pages/home_page.dart';
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
         "/home" : (context) => HomePage(),
         "/contact" : (context) => ContactPage(),
         "/list" : (context) => ListPage(),
-        "/map" : (context) => MapPage()
+        "/map" : (context) => MapPage(),
+        "/detail" : (context) => DetailPage(),
       },
     );
   }
