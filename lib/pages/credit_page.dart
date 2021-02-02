@@ -31,7 +31,7 @@ class _CreditPageState extends State<CreditPage> {
                 ),
                 child: Container(
                   margin: EdgeInsets.only(left:12, right:12, top: 12),
-                  decoration: BoxDecoration(color: Colors.white54, borderRadius: BorderRadius.circular(10)),
+                  decoration: BoxDecoration(color: Color.fromRGBO(255, 250, 250, 0.8), borderRadius: BorderRadius.circular(10)),
                   child: Row(
                     children: <Widget>[
                       GestureDetector(
@@ -56,7 +56,7 @@ class _CreditPageState extends State<CreditPage> {
                 ),
                 child: Container(
                   margin: EdgeInsets.all(12),
-                  decoration: BoxDecoration(color: Colors.white54, borderRadius: BorderRadius.circular(10)),
+                  decoration: BoxDecoration(color: Color.fromRGBO(255, 250, 250, 0.8), borderRadius: BorderRadius.circular(10)),
                   child: 
                   Center(child: Text("About Page")))),
             ],

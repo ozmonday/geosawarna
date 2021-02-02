@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                     routeFunc: widget.routeTo,
                   ),
                   MenuButton(
-                    title: "Galeri",
+                    title: "Gallery",
                     picture: "assets/gallery.png",
                     route: "/gallery",
                     routeFunc: widget.routeTo,

@@ -65,6 +65,12 @@ class _ListPageState extends State<ListPage> {
                       ListItem(title: "Pantai Tanjung Layar"),
                       ListItem(title: "Karang Taraje"),
                       ListItem(title: "Pantai Legon Pari"),
+                      ListItem(title: "Karang Beureum",),
+                      ListItem(title: "Goa Langir",),
+                      ListItem(title: "Pantai Muara",),
+                      ListItem(title: "Pantai Pasir Putih",),
+                      ListItem(title: "Goa Lalay",),
+                      
                     ],
                   ),
                 ),
