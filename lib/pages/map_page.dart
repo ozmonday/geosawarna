@@ -1,27 +1,50 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:geosawarna/providers/places.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:geosawarna/widgets/marker_modal.dart';
 import 'package:latlong/latlong.dart';
+import 'dart:async';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:provider/provider.dart';
 
-class MapPage extends StatefulWidget {
+class Map extends StatefulWidget {
+  Map({Key key}) : super(key: key);
+
   @override
-  _MapPageState createState() => _MapPageState();
+  _MapState createState() => _MapState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _MapState extends State<Map> {
+  final double _initFabHeight = 120.0;
+  double _fabHeight;
+  double _panelHeightOpen;
+  double _panelHeightClosed = 90.0;
+
+  PanelController pc = PanelController();
   CenterOnLocationUpdate _centerOnLocationUpdate;
   StreamController<double> _centerCurrentLocationStreamController;
-
   MapController _controller;
 
   @override
   void initState() {
     super.initState();
+    //pc.hide();
     _centerOnLocationUpdate = CenterOnLocationUpdate.never;
     _centerCurrentLocationStreamController = StreamController<double>();
+    _fabHeight = _initFabHeight;
+
+    //SchedulerBinding.instance.addPostFrameCallback((_) => hidePanel(context));
   }
+
+  void hidePanel(BuildContext ctx) {
+    pc.hide();
+  }
+
+  // @override
+  // void didUpdateWidget(covariant Map oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   pc.hide();
+  // }
 
   @override
   void dispose() {
@@ -31,30 +54,41 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double _width = MediaQuery.of(context).size.width;
-    final double _height =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    _panelHeightOpen = MediaQuery.of(context).size.height * .68;
+    var currentplace = context.watch<PlacesProvider>().currentPlace;
+    var markers = List<Marker>();
+    var places = context.watch<PlacesProvider>().places;
 
-    var markers = <Marker>[
-      markerPlace(
-          context, LatLng(-6.984163336984116, 106.30683775179502), _height),
-      markerPlace(
-          context, LatLng(-6.981437127253236, 106.30351181259377), _height),
-      markerPlace(
-          context, LatLng(-6.975239200630804, 106.29005785215917), _height),
-      markerPlace(
-          context, LatLng(-6.974941016529642, 106.29166717757914), _height),
-    ];
+    for (var i = 0; i < places.length; i++) {
+      var mp = markerPlace(context, i, places[i].latLng, pc);
+      markers.add(mp);
+    }
 
-    return SafeArea(
+    // places.asMap().entries.map((e) {
+
+    //   var mp = markerPlace(context, e.key, e.value.latLng, pc);
+    //   markers.add(mp);
+    // });
+
+    return Container(
       child: Scaffold(
         body: Stack(
-          overflow: Overflow.visible,
           children: <Widget>[
-            Container(
-              width: _width,
-              height: _height,
-              child: FlutterMap(
+            SlidingUpPanel(
+              panel: _panel(context),
+              collapsed: currentplace == null ?  _title("unkown") : _title(currentplace.name),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(14), topRight: Radius.circular(14)),
+              controller: pc,
+              maxHeight: _panelHeightOpen,
+              minHeight: currentplace == null ? 0 : _panelHeightClosed,
+              parallaxEnabled: true,
+              parallaxOffset: .5,
+              onPanelSlide: (double pos) => setState(() {
+                _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) +
+                    _initFabHeight;
+              }),
+              body: FlutterMap(
                 options: MapOptions(
                     center: LatLng(-6.977210, 106.296279),
                     zoom: 13.5,
@@ -88,8 +122,8 @@ class _MapPageState extends State<MapPage> {
               ),
             ),
             Positioned(
-              top: 14,
               right: 14,
+              bottom: _fabHeight,
               child: FloatingActionButton(
                   backgroundColor: Colors.white,
                   onPressed: () {
@@ -103,7 +137,7 @@ class _MapPageState extends State<MapPage> {
                     Icons.my_location,
                     color: Colors.blue,
                   )),
-            )
+            ),
           ],
         ),
       ),
@@ -111,21 +145,116 @@ class _MapPageState extends State<MapPage> {
   }
 }
 
-Marker markerPlace(BuildContext context, LatLng point, double height) {
+Marker markerPlace(BuildContext ctx, int id, LatLng point, PanelController pc) {
   return Marker(
     width: 30.0,
     height: 30.0,
     point: point, //LatLng(-6.977210, 106.296279),
-    builder: (ctx) => GestureDetector(
+    builder: (BuildContext ctx) => GestureDetector(
         onTap: () {
-          showModalBottomSheet(
-              backgroundColor: Colors.transparent,
-              barrierColor: Colors.black26,
-              context: context,
-              builder: (context) {
-                return MarkerModal();
-              });
+          //pc.hide();
+          ctx.read<PlacesProvider>().setCurrent(id);
+          pc.show();
         },
         child: Image.asset("assets/star.png")),
+  );
+}
+
+Widget _panel(BuildContext context) {
+  var place = context.watch<PlacesProvider>().currentPlace;
+  double _height = MediaQuery.of(context).size.height;
+  return Container(
+    margin: EdgeInsets.only(top: 18, left: 14, right: 14, bottom: 14),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Flexible(
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(bottom: 14),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: Colors.black12),
+                    height: _height * 0.32),
+                //Container(
+                //   child: Text(
+                //     "Deskripsi :",
+                //     style: TextStyle(fontWeight: FontWeight.bold),
+                //   ),
+                //   padding: EdgeInsets.only(top: 8, bottom: 5),
+                // ),
+                Container(
+                  child: Text(
+                    place == null ? "tidak ada deskripsi": place.desc,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 6,
+                    textAlign: TextAlign.justify,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Container(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            FlatButton(
+              padding: EdgeInsets.all(12),
+              color: Colors.blue,
+              textColor: Colors.white,
+              onPressed: () {},
+              child: Text("Petunjuk Jalan"),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4)),
+            ),
+            FlatButton(
+                padding: EdgeInsets.all(12),
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.blue, width: 1.5),
+                    borderRadius: BorderRadius.circular(4)),
+                textColor: Colors.blue,
+                onPressed: () {},
+                child: Text("Selengkapnya..."))
+          ],
+        ))
+      ],
+    ),
+  );
+}
+
+Widget _title(String title) {
+  return Container(
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(14), topRight: Radius.circular(14)),
+        color: Colors.white),
+    child: Column(children: <Widget>[
+      Container(
+        margin: EdgeInsets.only(top: 14),
+        height: 7,
+        width: 50,
+        decoration: BoxDecoration(
+            color: Colors.black26, borderRadius: BorderRadius.circular(16)),
+      ),
+      Flexible(
+        child: Container(
+            margin: EdgeInsets.only(left: 16, right: 16),
+            child: Center(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(28, 24, 28, 0.8),
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            )),
+      )
+    ]),
   );
 }

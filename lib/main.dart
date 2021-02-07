@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:geosawarna/providers/places.dart';
 import './pages/detail_info_page.dart';
 import './pages/galeri_page.dart';
 import './pages/kontak_page.dart';
@@ -8,9 +8,15 @@ import './pages/map_page.dart';
 import './pages/credit_page.dart';
 import './pages/about_page.dart';
 import './pages/home_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => PlacesProvider())
+      ],
+      child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -31,7 +37,7 @@ class MyApp extends StatelessWidget {
         "/home" : (context) => HomePage(),
         "/contact" : (context) => ContactPage(),
         "/list" : (context) => ListPage(),
-        "/map" : (context) => MapPage(),
+        "/map" : (context) => Map(),
         "/detail" : (context) => DetailPage(),
       },
     );

@@ -6,6 +6,7 @@ class MarkerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Container(
       padding: EdgeInsets.all(8),
       margin: EdgeInsets.all(6),
@@ -34,7 +35,7 @@ class MarkerModal extends StatelessWidget {
         Flexible(
           child: Container(
               padding: EdgeInsets.only(left:12),
-              height: width * 0.3,
+              height: height * 0.3,
               width: width * 0.7,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
