@@ -28,23 +28,14 @@ class _MapState extends State<Map> {
   @override
   void initState() {
     super.initState();
-    //pc.hide();
     _centerOnLocationUpdate = CenterOnLocationUpdate.never;
     _centerCurrentLocationStreamController = StreamController<double>();
     _fabHeight = _initFabHeight;
-
-    //SchedulerBinding.instance.addPostFrameCallback((_) => hidePanel(context));
   }
 
   void hidePanel(BuildContext ctx) {
     pc.hide();
   }
-
-  // @override
-  // void didUpdateWidget(covariant Map oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   pc.hide();
-  // }
 
   @override
   void dispose() {
@@ -54,7 +45,7 @@ class _MapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
-    _panelHeightOpen = MediaQuery.of(context).size.height * .68;
+    _panelHeightOpen = MediaQuery.of(context).size.height * .65;
     var currentplace = context.watch<PlacesProvider>().currentPlace;
     var markers = List<Marker>();
     var places = context.watch<PlacesProvider>().places;
@@ -64,19 +55,15 @@ class _MapState extends State<Map> {
       markers.add(mp);
     }
 
-    // places.asMap().entries.map((e) {
-
-    //   var mp = markerPlace(context, e.key, e.value.latLng, pc);
-    //   markers.add(mp);
-    // });
-
     return Container(
       child: Scaffold(
         body: Stack(
           children: <Widget>[
             SlidingUpPanel(
               panel: _panel(context),
-              collapsed: currentplace == null ?  _title("unkown") : _title(currentplace.name),
+              collapsed: currentplace == null
+                  ? _title("unkown")
+                  : _title(currentplace.name),
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(14), topRight: Radius.circular(14)),
               controller: pc,
@@ -123,7 +110,7 @@ class _MapState extends State<Map> {
             ),
             Positioned(
               right: 14,
-              bottom: _fabHeight,
+              bottom: currentplace == null ? 40 :  _fabHeight,
               child: FloatingActionButton(
                   backgroundColor: Colors.white,
                   onPressed: () {
@@ -163,6 +150,9 @@ Marker markerPlace(BuildContext ctx, int id, LatLng point, PanelController pc) {
 Widget _panel(BuildContext context) {
   var place = context.watch<PlacesProvider>().currentPlace;
   double _height = MediaQuery.of(context).size.height;
+
+
+
   return Container(
     margin: EdgeInsets.only(top: 18, left: 14, right: 14, bottom: 14),
     child: Column(
@@ -174,10 +164,14 @@ Widget _panel(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(bottom: 14),
+                    margin: EdgeInsets.only(bottom: 14),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: Colors.black12),
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.grey,
+                      image: DecorationImage(
+                          image: place == null ? AssetImage("assets/20201222_104731.jpg") : AssetImage(place.pic[0]),
+                          fit: BoxFit.fill),
+                    ),
                     height: _height * 0.32),
                 //Container(
                 //   child: Text(
@@ -188,7 +182,7 @@ Widget _panel(BuildContext context) {
                 // ),
                 Container(
                   child: Text(
-                    place == null ? "tidak ada deskripsi": place.desc,
+                    place == null ? "tidak ada deskripsi" : place.desc,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 6,
                     textAlign: TextAlign.justify,

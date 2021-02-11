@@ -68,6 +68,22 @@ flutter:
     - assets/20201222_113440.jpg
     - assets/star.png
     - assets/user.png
+    - assets/picaset/1.jpg
+    - assets/picaset/2.jpg
+    - assets/picaset/3.jpg
+    - assets/picaset/4.jpg
+    - assets/picaset/5.jpg
+    - assets/picaset/6.jpg
+    - assets/picaset/7.jpg
+    - assets/picaset/8.jpg
+    - assets/picaset/9.jpg
+    - assets/picaset/10.jpg
+    - assets/picaset/11.jpg
+    - assets/picaset/12.jpg
+    - assets/picaset/13.jpg
+    - assets/picaset/14.jpg
+    - assets/picaset/15.jpg
+    - assets/picaset/16.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
