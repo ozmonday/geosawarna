@@ -45,7 +45,7 @@ class _MapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
-    _panelHeightOpen = MediaQuery.of(context).size.height * .65;
+    _panelHeightOpen = MediaQuery.of(context).size.height * .57;
     var currentplace = context.watch<PlacesProvider>().currentPlace;
     var markers = List<Marker>();
     var places = context.watch<PlacesProvider>().places;
@@ -169,7 +169,7 @@ Widget _panel(BuildContext context) {
                       borderRadius: BorderRadius.circular(4),
                       color: Colors.grey,
                       image: DecorationImage(
-                          image: place == null ? AssetImage("assets/20201222_104731.jpg") : AssetImage(place.pic[0]),
+                          image: place == null ? AssetImage("assets/20201222_104731.jpg") : AssetImage(place.pic),
                           fit: BoxFit.fill),
                     ),
                     height: _height * 0.32),
@@ -184,8 +184,8 @@ Widget _panel(BuildContext context) {
                   child: Text(
                     place == null ? "tidak ada deskripsi" : place.desc,
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 6,
-                    textAlign: TextAlign.justify,
+                    maxLines: 3,
+                    //textAlign: TextAlign.justify,
                   ),
                 ),
               ],
@@ -211,8 +211,8 @@ Widget _panel(BuildContext context) {
                     side: BorderSide(color: Colors.blue, width: 1.5),
                     borderRadius: BorderRadius.circular(4)),
                 textColor: Colors.blue,
-                onPressed: () {},
-                child: Text("Selengkapnya..."))
+                onPressed: () => Navigator.pushNamed(context,"/detail", arguments: place),
+                child: Text("Selengkapnya"))
           ],
         ))
       ],

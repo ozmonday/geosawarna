@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/palce.dart';
 
 class DetailPage extends StatefulWidget {
   @override
@@ -6,7 +7,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  String title;
+  Place place;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class _DetailPageState extends State<DetailPage> {
     final double _height =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
     RouteSettings settings = ModalRoute.of(context).settings;
-    title = settings.arguments;
+    place = settings.arguments;
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -51,7 +52,7 @@ class _DetailPageState extends State<DetailPage> {
                       Container(
                           padding: EdgeInsets.only(left: 8),
                           child: Text(
-                            title,
+                            place.name,
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           )),
@@ -66,32 +67,26 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   child: Container(
                     margin: EdgeInsets.all(12),
-                    //padding: EdgeInsets.all(14),
                     decoration: BoxDecoration(
                         color: Color.fromRGBO(255, 250, 250, 0.8),
                         borderRadius: BorderRadius.circular(10)),
                     child: Container(
-                      padding: EdgeInsets.only(top:14, bottom:14),
+                      padding: EdgeInsets.only(top: 14, bottom: 14),
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left:14, right:14),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                image: DecorationImage(
-                                    image: AssetImage("assets/20201222_082847.jpg"),
-                                    fit: BoxFit.cover
-                                    ),
-                              ),
-                              height: _height * 0.35,
-                            ),
-                            Container(
-                                margin: EdgeInsets.only(top: 14, left: 14, right: 14),
-                                child: Text(
-                                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"))
-                          ],
+                          children: place.article,
+                          // children: <Widget>[
+                          //   // Image.asset(place.pic[0], width: _width),
+                          //   Container(
+                          //     margin: EdgeInsets.only(left: 14, right: 14),
+                          //     child: Image.asset(place.pic[0]),
+                          //   ),
+                          //   Container(
+                          //       margin: EdgeInsets.only(
+                          //           top: 14, left: 14, right: 14),
+                          //       child: Text(place.desc))
+                          // ],
                         ),
                       ),
                     ),

@@ -19,7 +19,7 @@ class _ListPageState extends State<ListPage> {
 
     for (var i in places) {
       listitem.add(ListItem(
-        title: i.name,
+        place: i,
       ));
     }
 
