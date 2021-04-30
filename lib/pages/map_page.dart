@@ -6,6 +6,7 @@ import 'package:latlong/latlong.dart';
 import 'dart:async';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Map extends StatefulWidget {
   Map({Key key}) : super(key: key);
@@ -77,7 +78,7 @@ class _MapState extends State<Map> {
               }),
               body: FlutterMap(
                 options: MapOptions(
-                    center: LatLng(-6.977210, 106.296279),
+                    center: LatLng(-6.975797879244859, 106.31340784090835),
                     zoom: 13.5,
                     onPositionChanged: (MapPosition position, bool hasGesture) {
                       if (hasGesture) {
@@ -110,7 +111,7 @@ class _MapState extends State<Map> {
             ),
             Positioned(
               right: 14,
-              bottom: currentplace == null ? 40 :  _fabHeight,
+              bottom: currentplace == null ? 40 : _fabHeight,
               child: FloatingActionButton(
                   backgroundColor: Colors.white,
                   onPressed: () {
@@ -151,8 +152,6 @@ Widget _panel(BuildContext context) {
   var place = context.watch<PlacesProvider>().currentPlace;
   double _height = MediaQuery.of(context).size.height;
 
-
-
   return Container(
     margin: EdgeInsets.only(top: 18, left: 14, right: 14, bottom: 14),
     child: Column(
@@ -169,23 +168,17 @@ Widget _panel(BuildContext context) {
                       borderRadius: BorderRadius.circular(4),
                       color: Colors.grey,
                       image: DecorationImage(
-                          image: place == null ? AssetImage("assets/20201222_104731.jpg") : AssetImage(place.pic),
+                          image: place == null
+                              ? AssetImage("assets/20201222_104731.jpg")
+                              : AssetImage(place.pic),
                           fit: BoxFit.fill),
                     ),
                     height: _height * 0.32),
-                //Container(
-                //   child: Text(
-                //     "Deskripsi :",
-                //     style: TextStyle(fontWeight: FontWeight.bold),
-                //   ),
-                //   padding: EdgeInsets.only(top: 8, bottom: 5),
-                // ),
                 Container(
                   child: Text(
                     place == null ? "tidak ada deskripsi" : place.desc,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
-                    //textAlign: TextAlign.justify,
                   ),
                 ),
               ],
@@ -200,7 +193,11 @@ Widget _panel(BuildContext context) {
               padding: EdgeInsets.all(12),
               color: Colors.blue,
               textColor: Colors.white,
-              onPressed: () {},
+              onPressed: () {
+                final Uri point = Uri(
+                    scheme: "geo", path: "${place.latLng.latitude}, ${place.latLng.longitude}");
+                launcer(point.toString());
+              },
               child: Text("Petunjuk Jalan"),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4)),
@@ -211,7 +208,8 @@ Widget _panel(BuildContext context) {
                     side: BorderSide(color: Colors.blue, width: 1.5),
                     borderRadius: BorderRadius.circular(4)),
                 textColor: Colors.blue,
-                onPressed: () => Navigator.pushNamed(context,"/detail", arguments: place),
+                onPressed: () =>
+                    Navigator.pushNamed(context, "/detail", arguments: place),
                 child: Text("Selengkapnya"))
           ],
         ))
@@ -251,4 +249,12 @@ Widget _title(String title) {
       )
     ]),
   );
+}
+
+Future<void> launcer(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw "can't lauch $url";
+  }
 }

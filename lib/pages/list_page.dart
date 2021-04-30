@@ -48,7 +48,8 @@ class _ListPageState extends State<ListPage> {
                         color: Color.fromRGBO(255, 250, 250, 0.8),
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(children: <Widget>[
-                      GestureDetector(
+                      InkWell(
+                        splashColor: Colors.white,
                         onTap: () => Navigator.pop(context),
                         child: Container(
                           padding: EdgeInsets.only(
@@ -80,17 +81,6 @@ class _ListPageState extends State<ListPage> {
                     child: ListView(
                       padding: EdgeInsets.only(top: 7, bottom: 7),
                       children: listitem,
-                      // children: <Widget>[
-                      //   ListItem(title: "Pantai Tanjung Layar"),
-                      //   ListItem(title: "Karang Taraje"),
-                      //   ListItem(title: "Pantai Legon Pari"),
-                      //   ListItem(title: "Karang Beureum",),
-                      //   ListItem(title: "Goa Langir",),
-                      //   ListItem(title: "Pantai Muara",),
-                      //   ListItem(title: "Pantai Pasir Putih",),
-                      //   ListItem(title: "Goa Lalay",),
-
-                      // ],
                     ),
                   ),
                 ),

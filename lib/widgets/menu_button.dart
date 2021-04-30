@@ -9,7 +9,8 @@ class MenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      splashColor: Colors.white54,
       onTap: () => routeFunc(ctx: context, route: route),
       child: Container(
         margin: EdgeInsets.all(10),

@@ -8,13 +8,15 @@ import './pages/map_page.dart';
 import './pages/credit_page.dart';
 import './pages/about_page.dart';
 import './pages/home_page.dart';
+import './providers/contacts.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => PlacesProvider())
+        ChangeNotifierProvider(create: (_) => PlacesProvider()),
+        ChangeNotifierProvider(create: (_) => ContactProvider(),)
       ],
       child: MyApp()));
 }
@@ -43,4 +45,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 
